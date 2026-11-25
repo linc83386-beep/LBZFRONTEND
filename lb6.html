@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Learning</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #E0FFFF url("https://i.ibb.co/G4Xh7sd2/image.jpg") center/cover no-repeat;
+            display: flex;
+            justify-content: center;
+			overflow: hidden;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 10px;
+        }
+
+        .main-box {
+            display: flex;
+            gap: 20px;
+            background: #E0FFFF;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            align-items: flex-start;
+        }
+
+        .levels {
+            text-align: left;
+            font-size: 14px;
+            background: #fff;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .levels label {
+            display: block;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+
+        .container {
+            width: 300px;
+            text-align: center;
+        }
+
+        .card {
+            background: #FFFFFF center/cover no-repeat;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            height: 170px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        .card.correct { border-color: #2ecc71; }
+        .card.wrong { border-color: #e74c3c; }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        #card-content {
+            position: relative;
+            z-index: 2;
+            font-size: 24px;
+            font-weight: bold;
+            color: #FFFFFF;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        input[type="text"] {
+            width: 90%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #3498db;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        input.error {
+            border: 2px solid #e74c3c;
+        }
+
+        .nav {
+            margin: 10px 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        button.arrow {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0 10px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .green { color: #2ecc71; }
+        .red { color: #e74c3c; }
+
+        @media (max-width: 550px) {
+            .main-box {
+                flex-direction: column;
+                align-items: center;
+            }
+            .levels {
+                width: 90%;
+                display: flex;
+                justify-content: space-around;
+                flex-wrap: wrap;
+            }
+            .levels b { width: 100%; margin-bottom: 5px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-box">
+    <div class="levels">
+        <b>Рівень складності</b>
+        <label><input type="radio" name="level" value="easy" checked>Початковий</label>
+        <label><input type="radio" name="level" value="medium">Середній</label>
+        <label><input type="radio" name="level" value="hard">Високий</label>
+    </div>
+
+    <div class="container">
+        <div style="color: #666; margin-bottom: 5px; font-size: 14px;">Геніальні фотолупи</div>
+        
+        <div class="card" id="card">
+            <div id="card-content">
+                <span id="word-text">word</span>
+            </div>
+        </div>
+
+        <div class="nav">
+            <button class="arrow" id="prev">&larr;</button>
+            <span id="counter">1/10</span>
+            <button class="arrow" id="next">&rarr;</button>
+        </div>
+
+        <input type="text" id="input" placeholder="Введіть переклад" autocomplete="off">
+
+        <div style="color: blue; font-weight: bold; margin-top: 5px;">Статистика</div>
+        <div class="stats">
+            <span class="green">Вірно:<br><span id="correct">0</span></span>
+            <span class="red">Невірно:<br><span id="wrong">0</span></span>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        const allWords = {
+            easy: [
+                { en: "putin", ua: "путин", img: "https://i.ibb.co/Y7P44k3N/1.jpg" },
+                { en: "bomb", ua: "бомба", img: "https://i.ibb.co/YF0ztk7z/1.jpg" },
+                { en: "explosion", ua: "вибух", img: "https://i.ibb.co/MDMK3cgj/3.jpg" },
+                { en: "chechnya", ua: "чечня", img: "https://i.ibb.co/tPsLfQ2Q/4.jpg" },
+                { en: "this", ua: "це", img: "https://i.ibb.co/s94P1WmH/3-2.jpg" },
+                { en: "ukrainian", ua: "українська", img: "https://i.ibb.co/Gf2RFLC5/5.jpg" },
+                { en: "always", ua: "завжди", img: "https://i.ibb.co/27FHWHgR/6.jpg" },
+                { en: "room", ua: "кімната", img: "https://i.ibb.co/rfF8YkkN/9.jpg" },
+                { en: "oh, in the Meadow", ua: "ой", img: "https://i.ibb.co/PsPqpwQt/7.jpg" },
+                { en: "red kalina", ua: "червона калина", img: "https://i.ibb.co/1ttrvmHg/9-1.jpg" }
+            ],
+            medium: [
+                { en: "freedom", ua: "свобода", img: "https://i.ibb.co/zHrDrnsD/1.jpg" },
+                { en: "victory", ua: "перемога", img: "https://i.ibb.co/Lddn2nwH/2.jpg" },
+                { en: "courage", ua: "мужність", img: "https://i.ibb.co/FLgNmXZJ/3.jpg" },
+                { en: "knowledge", ua: "знання", img: "https://i.ibb.co/ychKJpzJ/4.jpg" },
+                { en: "future", ua: "майбутнє", img: "https://i.ibb.co/23yJpmMt/5.jpg" },
+                { en: "experience", ua: "досвід", img: "https://i.ibb.co/9kSpCXyd/6.jpg" },
+                { en: "strength", ua: "сила", img: "https://i.ibb.co/N5ttRR3/7.jpg" },
+                { en: "language", ua: "мова", img: "https://i.ibb.co/YFmLLhMF/8.jpg" },
+                { en: "success", ua: "успіх", img: "https://i.ibb.co/tw814sgZ/9.jpg" },
+                { en: "development", ua: "розвиток", img: "https://i.ibb.co/Jj8KpbsR/10.jpg" }
+            ],
+            hard: [
+                { en: "independence", ua: "незалежність", img: "https://i.ibb.co/PsKt85S3/1.jpg" },
+                { en: "responsibility", ua: "відповідальність", img: "https://i.ibb.co/Y4pcB7dm/2.jpg" },
+                { en: "opportunity", ua: "можливість", img: "https://i.ibb.co/zH7rYTGb/2.jpg" },
+                { en: "environment", ua: "довкілля", img: "https://i.ibb.co/dw3P165P/1.jpg" },
+                { en: "confidence", ua: "впевненість", img: "https://i.ibb.co/HTpPFV2c/5.jpg" },
+                { en: "perseverance", ua: "наполегливість", img: "https://i.ibb.co/Nd5j1nL8/6.jpg" },
+                { en: "determination", ua: "рішучість", img: "https://i.ibb.co/dsZbzPLb/7.jpg" },
+                { en: "achievement", ua: "досягнення", img: "https://i.ibb.co/vxDyK4KQ/1.jpg" },
+                { en: "consciousness", ua: "свідомість", img: "https://i.ibb.co/4gCFrzJx/image.jpg" },
+                { en: "improvement", ua: "покращення", img: "https://i.ibb.co/yBWWtvBt/1.jpg" }
+            ]
+        };
+
+        let words = [];
+        let index = 0;
+        let correct = 0;
+        let wrong = 0;
+
+        function startLevel(level) {
+            words = [...allWords[level]].sort(() => Math.random() - 0.5);
+            index = 0;
+            correct = 0;
+            wrong = 0;
+            $("#correct").text(0);
+            $("#wrong").text(0);
+            showCard();
+        }
+
+        function showCard() {
+            let item = words[index];
+            $("#card").removeClass("correct wrong");
+            $("#input").removeClass("error").val("").focus();
+            $("#counter").text((index + 1) + "/" + words.length);
+            $("#card").css("background-image", `url(${item.img})`);
+            $("#word-text").text(item.en);
+        }
+
+        $("input[name='level']").change(function() {
+            startLevel($(this).val());
+        });
+
+        $("#card").click(function() {
+            let userAns = $("#input").val().trim().toLowerCase();
+            let item = words[index];
+
+            if (!userAns) {
+                $("#input").addClass("error");
+                return;
+            }
+
+            if (userAns === item.ua.toLowerCase()) {
+                $("#card").addClass("correct");
+                correct++;
+            } else {
+                $("#card").addClass("wrong");
+                wrong++;
+            }
+
+            $("#correct").text(correct);
+            $("#wrong").text(wrong);
+            $("#word-text").text(item.en + " — " + item.ua);
+
+            setTimeout(function() {
+                if (index < words.length - 1) {
+                    index++;
+                    showCard();
+                } else {
+                    alert("Тест завершено! Вірно: " + correct + ", Невірно: " + wrong);
+                    startLevel($("input[name='level']:checked").val());
+                }
+            }, 1000);
+        });
+
+        $("#next").click(function() {
+            if (index < words.length - 1) {
+                index++;
+                showCard();
+            }
+        });
+
+        $("#prev").click(function() {
+            if (index > 0) {
+                index--;
+                showCard();
+            }
+        });
+
+        $("#input").keypress(function(e) {
+            if (e.which === 13) $("#card").click();
+        }).on("input", function() {
+            $(this).removeClass("error");
+        });
+
+        startLevel("easy");
+    });
+</script>
+
+</body>
+</html>

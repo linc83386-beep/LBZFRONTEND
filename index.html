@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Індивідуальне завдання</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: radial-gradient(circle at 15% 10%, rgba(245, 158, 11, 0.13), transparent 45%),
+            radial-gradient(circle at 85% 12%, rgba(251, 113, 133, 0.11), transparent 48%),#0a0b0e;
+            color: #f4f4f5;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            padding: 28px 16px;
+            min-height: 100vh;
+        }
+        .main-container { max-width: 820px; margin: 0 auto; }
+        .brand-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 0.78rem; font-weight: 600; color: #fde68a;
+            background: rgba(245, 158, 11, 0.11); border: 1px solid rgba(245, 158, 11, 0.28);
+            padding: 5px 12px; border-radius: 8px; margin-bottom: 18px;
+        }
+        .brand-dot { width: 7px; height: 7px; border-radius: 2px; background: #f59e0b; }
+        .glass-panel {
+            background: rgba(20, 22, 29, 0.88); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px;
+            padding: 20px; margin-bottom: 18px; box-shadow: 0 16px 34px rgba(0, 0, 0, 0.45);
+        }
+        .panel-title {
+            font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.09em; color: #a1a1aa; margin: 0 0 14px;
+        }
+        .labs-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+        .lab-tile {
+            flex: 1 1 220px; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+            background: rgba(255, 255, 255, 0.025); border: 1px solid rgba(255, 255, 255, 0.08);
+            border-left: 3px solid rgba(245, 158, 11, 0.35); border-radius: 12px;
+            padding: 11px 14px; color: #f4f4f5; text-decoration: none; transition: 0.16s ease;
+        }
+        .lab-tile:hover {
+            background: rgba(36, 39, 51, 0.94); border-color: rgba(245, 158, 11, 0.55);
+            border-left-color: #f59e0b; color: #fff; transform: translateY(-2px);
+        }
+        .lab-index {
+            width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 0.82rem; font-weight: 700; color: #fbbf24;
+            background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.25);
+        }
+        .lab-name { font-size: 0.9rem; font-weight: 500; line-height: 1.25; }
+        .lab-go { color: #71717a; transition: 0.16s ease; }
+        .lab-tile:hover .lab-go { color: #fbbf24; transform: translateX(3px); }
+        .stat-chip {
+            background: rgba(11, 12, 16, 0.78); border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 10px; padding: 6px 14px; font-size: 0.88rem;
+        }
+        .game-resize-box {
+            width: 280px; height: 380px; min-width: 220px; min-height: 280px;
+            max-width: 100%; max-height: 600px; margin: 0 auto; resize: both; overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 12px;
+            background: linear-gradient(180deg, #f3f7fb 0%, #e4edf6 100%);
+        }
+        canvas { display: block; width: 100%; height: 100%; }
+        .btn-accent {
+            background: linear-gradient(135deg, #f59e0b 0%, #e11d48 100%);
+            border: none; color: #fff; font-weight: 600; border-radius: 10px;
+            padding: 10px 22px; transition: 0.16s ease;
+        }
+        .btn-accent:hover { color: #fff; filter: brightness(1.08); transform: translateY(-1px); }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="brand-pill"><span class="brand-dot"></span>Портал лабораторних робіт</div>
+
+    <div class="glass-panel">
+        <h6 class="panel-title">Лабораторні роботи</h6>
+        <div class="labs-grid">
+            <a href="lb1.html" class="lab-tile">
+                <span class="d-flex align-items-center gap-2"><span class="lab-index">1</span><span class="lab-name">Магічна куля</span></span>
+                <span class="lab-go">&rarr;</span>
+            </a>
+            <a href="lb2.html" class="lab-tile">
+                <span class="d-flex align-items-center gap-2"><span class="lab-index">2</span><span class="lab-name">Гра «Більше число»</span></span>
+                <span class="lab-go">&rarr;</span>
+            </a>
+            <a href="lb3.html" class="lab-tile">
+                <span class="d-flex align-items-center gap-2"><span class="lab-index">3</span><span class="lab-name">Карткова гра «21»</span></span>
+                <span class="lab-go">&rarr;</span>
+            </a>
+            <a href="lb4.html" class="lab-tile">
+                <span class="d-flex align-items-center gap-2"><span class="lab-index">4</span><span class="lab-name">Яка ти емоція сьогодні?</span></span>
+                <span class="lab-go">&rarr;</span>
+            </a>
+            <a href="lb5.html" class="lab-tile">
+                <span class="d-flex align-items-center gap-2"><span class="lab-index">5</span><span class="lab-name">Language Learning</span></span>
+                <span class="lab-go">&rarr;</span>
+            </a>
+            <a href="lb6.html" class="lab-tile">
+                <span class="d-flex align-items-center gap-2"><span class="lab-index">6</span><span class="lab-name">Language Learning — Рівні</span></span>
+                <span class="lab-go">&rarr;</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="glass-panel text-center">
+        <h6 class="panel-title mb-1">Міні-гра</h6>
+        <p class="text-secondary small mb-3">Керування: <kbd class="bg-dark text-light border border-secondary px-2 py-0">←</kbd> <kbd class="bg-dark text-light border border-secondary px-2 py-0">→</kbd> або <kbd class="bg-dark text-light border border-secondary px-2 py-0">A</kbd> / <kbd class="bg-dark text-light border border-secondary px-2 py-0">D</kbd></p>
+
+        <img id="playerSpriteImg" src="https://i.ibb.co/5hbRn5rs/image.png" alt="Спрайт гравця" class="d-none">
+        <img id="gameBgImg" src="https://i.ibb.co/1fQZLK0x/image.png" alt="Фон гри" class="d-none">
+        <img id="enemySpriteImg" src="https://i.ibb.co/8L3HntWQ/2026-11-25-213038.png" alt="Спрайт ворога" class="d-none">
+
+        <div class="d-flex justify-content-center gap-2 mb-3">
+            <div class="stat-chip">Рахунок: <strong class="text-info" id="scoreVal">0</strong></div>
+            <div class="stat-chip">Рекорд: <strong class="text-light" id="bestVal">0</strong></div>
+        </div>
+
+        <div class="game-resize-box" id="gameResizeBox">
+            <canvas id="gameCanvas" width="280" height="380"></canvas>
+        </div>
+
+        <div class="mt-3 d-flex justify-content-center">
+            <button type="button" id="btnStart" class="btn btn-accent px-5">Старт</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+    $(function () {
+        const box = $("#gameResizeBox")[0];
+        const canvas = $("#gameCanvas")[0];
+        const ctx = canvas.getContext("2d");
+
+        const imgs = {
+            player: $("#playerSpriteImg")[0],
+            bg: $("#gameBgImg")[0],
+            enemy: $("#enemySpriteImg")[0]
+        };
+
+        let player, platforms, enemies, score, best = 0, running = false, animId;
+        let keys = { left: false, right: false };
+        let msg = "Doodle Jump";
+
+        const ready = img => img && img.getAttribute("src")?.trim() && img.complete && img.naturalWidth > 0;
+        const randX = w => Math.random() * Math.max(10, canvas.width - w);
+        const setSize = () => {
+            canvas.width = Math.max(200, box.clientWidth);
+            canvas.height = Math.max(240, box.clientHeight);
+        };
+
+        function addScore(pts) {
+            score += pts;
+            best = Math.max(best, score);
+            $("#scoreVal").text(score);
+            $("#bestVal").text(best);
+        }
+
+        function makeEnemy(y) {
+            const x = randX(30);
+            return {
+                x, y, w: 30, h: 24,
+                vx: (Math.random() < 0.5 ? -1 : 1) * (1.1 + Math.random() * 0.9),
+                minX: Math.max(4, x - 45),
+                maxX: Math.min(canvas.width - 34, x + 45)
+            };
+        }
+
+        function init() {
+            setSize();
+            score = 0;
+            $("#scoreVal").text(0);
+
+            player = { x: canvas.width / 2 - 18, y: canvas.height - 84, w: 36, h: 36, vx: 0, vy: -9, speed: 4.5, g: 0.35 };
+
+            const count = 7, step = canvas.height / count;
+            platforms = [{ x: canvas.width / 2 - 35, y: canvas.height - 40, w: 70, h: 12 }];
+            for (let i = 1; i < count; i++) {
+                platforms.push({ x: randX(70), y: canvas.height - 40 - i * step, w: 70, h: 12 });
+            }
+
+            enemies = [makeEnemy(canvas.height * 0.35), makeEnemy(canvas.height * 0.12)];
+        }
+
+        function drawBg() {
+            if (ready(imgs.bg)) return ctx.drawImage(imgs.bg, 0, 0, canvas.width, canvas.height);
+            const g = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            g.addColorStop(0, "#f3f7fb");
+            g.addColorStop(1, "#e4edf6");
+            ctx.fillStyle = g;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function drawPlayer(p) {
+            if (ready(imgs.player)) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(p.x + p.w / 2, p.y + p.h / 2, p.w / 2, 0, Math.PI * 2);
+                ctx.clip();
+                ctx.drawImage(imgs.player, p.x, p.y, p.w, p.h);
+                ctx.restore();
+                ctx.strokeStyle = "#fff";
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(p.x + p.w / 2, p.y + p.h / 2, p.w / 2, 0, Math.PI * 2);
+                ctx.stroke();
+                return;
+            }
+            ctx.fillStyle = "#2563eb";
+            ctx.beginPath();
+            ctx.roundRect(p.x, p.y, p.w, p.h, 8);
+            ctx.fill();
+            ctx.fillStyle = "#fff";
+            ctx.fillRect(p.x + 6, p.y + 8, 5, 5);
+            ctx.fillRect(p.x + 19, p.y + 8, 5, 5);
+        }
+
+        function drawEnemies() {
+            for (const en of enemies) {
+                if (ready(imgs.enemy)) {
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.roundRect(en.x, en.y, en.w, en.h, 7);
+                    ctx.clip();
+                    ctx.drawImage(imgs.enemy, en.x, en.y, en.w, en.h);
+                    ctx.restore();
+                    continue;
+                }
+                ctx.fillStyle = "#ef4444";
+                ctx.beginPath();
+                ctx.roundRect(en.x, en.y, en.w, en.h, 7);
+                ctx.fill();
+                ctx.fillStyle = "#fff";
+                ctx.fillRect(en.x + 5, en.y + 6, 6, 5);
+                ctx.fillRect(en.x + 19, en.y + 6, 6, 5);
+                ctx.fillStyle = "#111827";
+                ctx.fillRect(en.x + 7, en.y + 8, 3, 3);
+                ctx.fillRect(en.x + 21, en.y + 8, 3, 3);
+            }
+        }
+
+        function drawIdle() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawBg();
+            if (ready(imgs.player)) drawPlayer({ x: canvas.width / 2 - 22, y: 70, w: 44, h: 44 });
+            const dark = !ready(imgs.bg);
+            ctx.textAlign = "center";
+            ctx.fillStyle = dark ? "#2b3548" : "#fff";
+            ctx.font = "bold 13px Arial";
+            ctx.fillText(msg, canvas.width / 2, canvas.height / 2 + 10, canvas.width - 20);
+            ctx.fillStyle = dark ? "#5c6b84" : "#e2e8f0";
+            ctx.font = "12px Arial";
+            ctx.fillText("Натисніть «Старт» для гри", canvas.width / 2, canvas.height / 2 + 34, canvas.width - 20);
+        }
+
+        function loop() {
+            if (!running) return;
+
+            player.vx = (keys.right ? 1 : 0) - (keys.left ? 1 : 0);
+            player.x += player.vx * player.speed;
+            if (player.x + player.w < 0) player.x = canvas.width;
+            if (player.x > canvas.width) player.x = -player.w;
+
+            player.vy += player.g;
+            player.y += player.vy;
+
+            if (player.y < canvas.height / 2 && player.vy < 0) {
+                const dy = -player.vy;
+                player.y = canvas.height / 2;
+                addScore(Math.floor(dy));
+                platforms.forEach(p => {
+                    p.y += dy;
+                    if (p.y > canvas.height) { p.y = 0; p.x = randX(p.w); }
+                });
+                enemies = enemies.map(en => {
+                    en.y += dy;
+                    return en.y > canvas.height + 20 ? makeEnemy(-24 - Math.random() * 80) : en;
+                });
+            }
+
+            if (player.vy > 0) {
+                for (const p of platforms) {
+                    if (player.x + player.w > p.x && player.x < p.x + p.w &&
+                        player.y + player.h >= p.y && player.y + player.h <= p.y + p.h + player.vy) {
+                        player.vy = -9.5;
+                        break;
+                    }
+                }
+            }
+
+            let hit = false;
+            enemies = enemies.map(en => {
+                en.x += en.vx;
+                if (en.x <= en.minX || en.x >= en.maxX || en.x <= 2 || en.x + en.w >= canvas.width - 2) en.vx = -en.vx;
+
+                const overlapX = player.x + player.w - 4 > en.x && player.x + 4 < en.x + en.w;
+                const overlapY = player.y + player.h > en.y && player.y < en.y + en.h;
+                if (!overlapX || !overlapY) return en;
+
+                if (player.vy > 0 && player.y + player.h - player.vy <= en.y + en.h * 0.55) {
+                    player.vy = -9.5;
+                    addScore(25);
+                    return makeEnemy(-30 - Math.random() * 90);
+                }
+                hit = true;
+                return en;
+            });
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawBg();
+            ctx.fillStyle = "#fff";
+            for (const p of platforms) {
+                ctx.beginPath();
+                ctx.roundRect(p.x, p.y, p.w, p.h, 6);
+                ctx.fill();
+            }
+            drawEnemies();
+            drawPlayer(player);
+
+            if (hit || player.y > canvas.height) {
+                running = false;
+                $("#btnStart").text("Грати знову");
+                msg = (hit ? "Зіткнення з ворогом! " : "Гру закінчено! ") + "Рахунок: " + score;
+                drawIdle();
+                return;
+            }
+
+            animId = requestAnimationFrame(loop);
+        }
+
+        const onKey = (e, down) => {
+            const k = e.key.toLowerCase();
+            if (["arrowleft", "a", "ф"].includes(k)) keys.left = down;
+            if (["arrowright", "d", "в"].includes(k)) keys.right = down;
+        };
+
+        $(document).on("keydown", e => onKey(e, true)).on("keyup", e => onKey(e, false));
+
+        Object.values(imgs).forEach(img => img?.addEventListener("load", () => !running && drawIdle()));
+        Object.values(imgs).forEach(img => img?.addEventListener("error", () => !running && drawIdle()));
+
+        $("#btnStart").on("click", function () {
+            cancelAnimationFrame(animId);
+            init();
+            running = true;
+            $(this).text("Рестарт");
+            loop();
+        });
+
+        setSize();
+        drawIdle();
+    });
+</script>
+</body>
+</html>

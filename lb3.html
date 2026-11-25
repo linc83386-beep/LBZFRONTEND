@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота №9</title>
+    <style>
+        body {
+            background-image: url('https://i.postimg.cc/7hZcZVtK/photo-2026-11-05-11-41-52.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: #121214;
+            
+            color: #f0f0f5;
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .game-box {
+            background: rgba(184, 184, 184, 0.75);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            width: 450px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            border: 1px solid #DCDCDC;
+        }
+
+        .boards {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .player {
+            background: #808080;
+            padding: 15px;
+            border-radius: 10px;
+            width: 45%;
+            border: 1px solid #FFF0F5;
+        }
+
+        .score {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #FFFFFF;
+            margin: 10px 0;
+        }
+
+        .card {
+            width: 90px;
+            height: 130px;
+            background: #fff;
+            color: #222;
+            border-radius: 8px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 6px;
+            font-weight: bold;
+            border: 2px solid #ccc;
+        }
+
+        .card.red { color: #e84118; }
+        .card-top { font-size: 0.9rem; }
+        .card-mid { font-size: 1.8rem; text-align: center; }
+        .card-bot { font-size: 0.9rem; transform: rotate(180deg); align-self: flex-end; }
+
+        button#gen-btn {
+            background: #000000;
+            color: #FFFFFF;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button#gen-btn:disabled {
+            background: #444;
+            color: #888;
+            cursor: not-allowed;
+        }
+
+        #message {
+            margin-top: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            min-height: 25px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-box">
+        <h1>Гра «21», кто кого переможе!</h1>
+        <div id="round-text">Спроба 0 з 3</div>
+
+        <div class="boards">
+            <div class="player">
+                <h3 id="user-name">User</h3>
+                <div id="user-score" class="score">0</div>
+                <div id="user-card" class="card">
+                    <span style="margin:auto; color:#888; font-size:0.8rem; font-weight:normal;">Карта</span>
+                </div>
+            </div>
+
+            <div class="player">
+                <h3>Євген Давиденко</h3>
+                <div id="computer-score" class="score">0</div>
+                <div id="computer-card" class="card">
+                    <span style="margin:auto; color:#888; font-size:0.8rem; font-weight:normal;">Карта</span>
+                </div>
+            </div>
+        </div>
+
+        <button id="gen-btn">Generate</button>
+        <div id="message"></div>
+    </div>
+
+    <script>
+        const deck = [
+            { name: "6", suit: "♠", val: 6, color: "black" },
+            { name: "7", suit: "♣", val: 7, color: "black" },
+            { name: "8", suit: "♠", val: 8, color: "black" },
+            { name: "9", suit: "♣", val: 9, color: "black" },
+            { name: "10", suit: "♠", val: 10, color: "black" },
+            { name: "J", suit: "♥", val: 2, color: "red" },
+            { name: "Q", suit: "♦", val: 3, color: "red" },
+            { name: "K", suit: "♥", val: 4, color: "red" },
+            { name: "A", suit: "♦", val: 11, color: "red" }
+        ];
+
+        let step = 0;
+        let userScore = 0;
+        let compScore = 0;
+        let playerName = "User";
+
+        window.onload = () => {
+            let name = prompt("Введіть ваше ім'я:", "User");
+            if (name && name.trim()) {
+                playerName = name.trim();
+                document.getElementById('user-name').textContent = playerName;
+            }
+        };
+
+        const rndCard = () => deck[Math.floor(Math.random() * deck.length)];
+
+        function showCard(element, card) {
+            element.className = "card " + card.color;
+            element.innerHTML = `
+                <div class="card-top">${card.name}${card.suit}</div>
+                <div class="card-mid">${card.suit}</div>
+                <div class="card-bot">${card.name}${card.suit}</div>
+            `;
+        }
+
+        function finish(text, color) {
+            document.getElementById('gen-btn').disabled = true;
+            let msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.style.color = color;
+        }
+
+        document.getElementById('gen-btn').addEventListener('click', () => {
+            if (step >= 3) return;
+            step++;
+
+            let uCard = rndCard();
+            let cCard = rndCard();
+
+            userScore += uCard.val;
+            compScore += cCard.val;
+
+            showCard(document.getElementById('user-card'), uCard);
+            showCard(document.getElementById('computer-card'), cCard);
+
+            document.getElementById('round-text').textContent = `Спроба ${step} з 3`;
+            document.getElementById('user-score').textContent = userScore;
+            document.getElementById('computer-score').textContent = compScore;
+
+            if (userScore > 21 || compScore > 21) {
+                if (userScore > 21 && compScore > 21) finish("Нічия! Обидва перевищили 21.", "#FFFFFF");
+                else if (userScore > 21) finish(`Перебір! Переміг Євген Давиденко.`, "#FFFFFF");
+                else finish(`Перебір у Євгена Давиденка! Переміг ${playerName}!`, "#FFFFFF");
+                return;
+            }
+
+            if (step === 3) {
+                if (userScore > compScore) finish(`Переміг ${playerName}! 🎉`, "#FFFFFF");
+                else if (compScore > userScore) finish(`Переміг Євген Давиденко! 💻`, "#FFFFFF");
+                else finish(`Нічия! 🤝`, "#FFFFFF");
+            }
+        });
+    </script>
+</body>
+</html>

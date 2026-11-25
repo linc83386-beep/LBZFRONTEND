@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Learning</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    background: #E0FFFF url("https://i.ibb.co/G4Xh7sd2/image.jpg") center/cover no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background: #E0FFFF;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    width: 320px;
+    text-align: center;
+}
+
+.container h2, .container h3 {
+    color: #000000; 
+}
+
+.card {
+    background: #FFFFFF center/cover no-repeat;
+    border: 2px solid #3498db;
+    border-radius: 10px;
+    height: 180px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    cursor: pointer;
+    user-select: none;
+    transition: border-color 0.3s ease;
+}
+
+.card.correct { border-color: #2ecc71; }
+.card.wrong { border-color: #e74c3c; }
+
+.card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+#card-content {
+    position: relative;
+    z-index: 2;
+    font-size: 26px;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+    padding: 0 10px;
+}
+
+input {
+    width: 90%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.nav {
+    margin: 15px 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+button.arrow {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.green { color: #6B8E23; }
+.red { color: #e74c3c; }
+.green, .red { text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div style="color: #666; margin-bottom: 5px; font-size: 14px;">Геніальні фотолупи</div>
+    
+    <div class="card" id="card">
+        <div id="card-content">
+            <span id="word-text">word</span>
+        </div>
+    </div>
+
+    <div class="nav">
+        <button class="arrow" id="prev">&larr;</button>
+        <span id="counter">1/10</span>
+        <button class="arrow" id="next">&rarr;</button>
+    </div>
+
+    <input type="text" id="input" placeholder="Місце для каракулей" autocomplete="off">
+
+    <div class="stats">
+        <span class="green">Вірно: <span id="correct">0</span></span>
+        <span class="red">Невірно: <span id="wrong">0</span></span>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        const words = [
+            { en: "putin", ua: "путин", img: "https://i.ibb.co/Y7P44k3N/1.jpg" },
+            { en: "bomb", ua: "бомба", img: "https://i.ibb.co/YF0ztk7z/1.jpg" },
+            { en: "explosion", ua: "вибух", img: "https://i.ibb.co/MDMK3cgj/3.jpg" },
+            { en: "chechnya", ua: "чечня", img: "https://i.ibb.co/tPsLfQ2Q/4.jpg" },
+            { en: "this", ua: "Це", img: "https://i.ibb.co/s94P1WmH/3-2.jpg" },
+            { en: "ukrainian", ua: "українська", img: "https://i.ibb.co/Gf2RFLC5/5.jpg" },
+            { en: "ukrainian", ua: "українська", img: "https://i.ibb.co/27FHWHgR/6.jpg" },
+            { en: "room", ua: "кімната", img: "https://i.ibb.co/rfF8YkkN/9.jpg" },
+            { en: "oh, in the Meadow", ua: "Ой", img: "https://i.ibb.co/PsPqpwQt/7.jpg" },
+            { en: "red kalina", ua: "Червона калина", img: "https://i.ibb.co/1ttrvmHg/9-1.jpg" }
+        ];
+
+        let index = 0;
+        let correct = 0;
+        let wrong = 0;
+
+        words.sort(() => Math.random() - 0.5);
+
+        function showCard() {
+            let item = words[index];
+            $("#card").removeClass("correct wrong");
+            $("#counter").text((index + 1) + "/" + words.length);
+            $("#input").val("").focus();
+
+            $("#card-content").fadeOut(200, function() {
+                $("#card").css("background-image", `url(${item.img})`);
+                $("#word-text").text(item.en);
+                $(this).fadeIn(300);
+            });
+        }
+
+            $("#card").click(function() {
+            let userAns = $("#input").val().trim().toLowerCase();
+            let item = words[index];
+
+            if (!userAns) return;
+
+            if (userAns === item.ua.trim().toLowerCase()) {
+                $("#card").addClass("correct");
+                correct++;
+            } else {
+                $("#card").addClass("wrong");
+                wrong++;
+            }
+
+            $("#correct").text(correct);
+            $("#wrong").text(wrong);
+
+            $("#card-content").fadeOut(200, function() {
+                $("#word-text").text(item.en + " — " + item.ua);
+                $(this).fadeIn(200);
+            });
+
+            setTimeout(function() {
+                if (index < words.length - 1) {
+                    index++;
+                    showCard();
+                } else {
+                    alert("Тест завершено! Вірно: " + correct + ", Невірно: " + wrong);
+                }
+            }, 1200);
+        });
+
+        $("#next").click(function() {
+            if (index < words.length - 1) {
+                index++;
+                showCard();
+            }
+        });
+
+        $("#prev").click(function() {
+            if (index > 0) {
+                index--;
+                showCard();
+            }
+        });
+
+        $("#input").keypress(function(e) {
+            if (e.which === 13) {
+                $("#card").click();
+            }
+        });
+
+        $("#card-content").hide();
+        showCard();
+    });
+</script>
+
+</body>
+</html>
